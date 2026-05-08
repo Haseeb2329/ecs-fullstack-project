@@ -41,3 +41,17 @@ jobs:
       - name: Push Backend Image
         run: |
           docker push 790762402500.dkr.ecr.us-east-2.amazonaws.com/backend:latest
+
+                - name: Force ECS Frontend Deployment
+        run: |
+          aws ecs update-service \
+            --cluster ecs-prod-cluster-2 \
+            --service frontend-service \
+            --force-new-deployment
+
+      - name: Force ECS Backend Deployment
+        run: |
+          aws ecs update-service \
+            --cluster ecs-prod-cluster-2 \
+            --service backend-service \
+            --force-new-deployment
