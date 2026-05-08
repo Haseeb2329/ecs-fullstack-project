@@ -42,7 +42,7 @@ jobs:
         run: |
           docker push 790762402500.dkr.ecr.us-east-2.amazonaws.com/backend:latest
 
-                - name: Force ECS Frontend Deployment
+      - name: Force ECS Frontend Deployment
         run: |
           aws ecs update-service \
             --cluster ecs-prod-cluster-2 \
