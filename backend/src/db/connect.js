@@ -1,7 +1,6 @@
 const { Pool } = require('pg');
 
-const connectionString = process.env.DATABASE_URL || process.env.PG_CONNECTION || 'postgresql://postgres:postgres@postgres:5432/postgres';
-
+const connectionString = 'postgresql://postgres:Virkin.33@ecs-postgres-db.c128iw0ee6hm.us-east-2.rds.amazonaws.com:5432/postgres';
 const pool = new Pool({
     connectionString,
     max: parseInt(process.env.PG_POOL_MAX || '10', 10),
