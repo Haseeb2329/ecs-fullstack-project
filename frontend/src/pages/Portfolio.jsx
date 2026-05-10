@@ -1,3 +1,3 @@
-export default function Home() {
-  return <h1>Portfolio</h1>;
+export default function Portfolio() {
+  return <h1>Portfolio Page</h1>;
 }
