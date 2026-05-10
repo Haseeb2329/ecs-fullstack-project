@@ -10,39 +10,9 @@ const apiRouter = require('./routes/api');
 const errorHandler = require('./middleware/errorHandler');
 
 const app = express();
-app.get('/api/tasks', async (req, res) => {
-  try {
-    await pool.query(`
-      CREATE TABLE IF NOT EXISTS tasks (
-        id SERIAL PRIMARY KEY,
-        title TEXT
-      )
-    `);
 
-    const tasks = await pool.query('SELECT * FROM tasks');
 
-    res.json(tasks.rows);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: 'Database error' });
-  }
-});
 
-app.post('/api/tasks', async (req, res) => {
-  try {
-    const { title } = req.body;
-
-    const result = await pool.query(
-      'INSERT INTO tasks(title) VALUES($1) RETURNING *',
-      [title]
-    );
-
-    res.json(result.rows[0]);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: 'Insert failed' });
-  }
-});
 const PORT = process.env.PORT || 5000;
 const NODE_ENV = process.env.NODE_ENV || 'development';
 
@@ -86,7 +56,39 @@ app.get('/api/health', async (req, res) => {
         return res.status(500).json({ status: 'error', database: 'unreachable', error: err.message });
     }
 });
+app.get('/api/tasks', async (req, res) => {
+  try {
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS tasks (
+        id SERIAL PRIMARY KEY,
+        title TEXT
+      )
+    `);
 
+    const tasks = await pool.query('SELECT * FROM tasks');
+
+    res.json(tasks.rows);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Database error' });
+  }
+
+});
+app.post('/api/tasks', async (req, res) => {
+  try {
+    const { title } = req.body;
+
+    const result = await pool.query(
+      'INSERT INTO tasks(title) VALUES($1) RETURNING *',
+      [title]
+    );
+
+    res.json(result.rows[0]);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Insert failed' });
+  }
+});
 /**
  * 404 handler (optional)
  */
