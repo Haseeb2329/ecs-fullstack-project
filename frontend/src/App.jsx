@@ -1,35 +1,25 @@
-import { useState } from 'react';
-import axios from 'axios';
-import './App.css';
+import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
+
+import Home from './pages/Home';
+import Portfolio from './pages/Portfolio';
+import Contact from './pages/Contact';
 
 function App() {
-    const [message, setMessage] = useState('');
-    const [loading, setLoading] = useState(false);
+  return (
+    <BrowserRouter>
+      <nav style={{ display: 'flex', gap: '20px', padding: '20px' }}>
+        <Link to="/">Home</Link>
+        <Link to="/portfolio">Portfolio</Link>
+        <Link to="/contact">Contact</Link>
+      </nav>
 
-    const checkBackend = async () => {
-        setLoading(true);
-        try {
-            const response = await axios.get('/api/health');
-            setMessage(response.data.message);
-        } catch (error) {
-            setMessage('Failed to connect to backend' + (error.response ? `: ${error.response.data.message}` : ''));
-        }
-        setLoading(false);
-    };
-
-    return (
-        <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center">
-            <h1 className="text-3xl font-bold mb-4">Vite + React + Node.js + PostgreSQL</h1>
-            <button
-                onClick={checkBackend}
-                disabled={loading}
-                className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:bg-blue-300 transition-colors"
-            >
-                {loading ? 'Checking...' : 'Check Backend Connection'}
-            </button>
-            {message && <p className="mt-4 text-lg">{message}</p>}
-        </div>
-    );
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/portfolio" element={<Portfolio />} />
+        <Route path="/contact" element={<Contact />} />
+      </Routes>
+    </BrowserRouter>
+  );
 }
 
 export default App;
