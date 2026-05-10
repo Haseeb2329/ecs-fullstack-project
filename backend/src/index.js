@@ -18,7 +18,21 @@ app.get('/api/tasks', async (req, res) => {
         title TEXT
       )
     `);
+app.post('/api/tasks', async (req, res) => {
+  try {
+    const { title } = req.body;
 
+    const result = await pool.query(
+      'INSERT INTO tasks(title) VALUES($1) RETURNING *',
+      [title]
+    );
+
+    res.json(result.rows[0]);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Insert failed' });
+  }
+});
     const tasks = await pool.query('SELECT * FROM tasks');
 
     res.json(tasks.rows);
